@@ -1,0 +1,16 @@
+# To use:
+#   $ conda env create -f environment.yml
+#   $ conda activate 697-env
+# Note: if it fails try running: 
+#   $ source ~/anaconda3/etc/profile.d/conda.sh
+name: 697-env
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+      - sklearn
+      - tensorflow
+      - pandas
+      - matplotlib
+      - ipython
+      - ipykernel
