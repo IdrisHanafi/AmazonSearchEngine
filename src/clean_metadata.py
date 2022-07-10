@@ -12,7 +12,25 @@ def clean_data(df):
     """
     Parses the needed features and explodes columns
     """
+    features = [
+        'category',
+        'description',
+        'title',
+        'also_buy',
+        'brand',
+        'feature',
+        'rank',
+        'also_view',
+        'main_cat',
+        'similar_item',
+        'date',
+        'price',
+        'asin',
+        'imageURL',
+        'imageURLHighRes',
+    ]
     
+    df = df[features]
     
     return df
 

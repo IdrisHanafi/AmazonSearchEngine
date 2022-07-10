@@ -7,3 +7,10 @@ stages:
     - path: data/cleaned_output.csv
       md5: 3eefb4bc22639415e22973b74bf52aec
       size: 6303599
+  clean_metadata:
+    cmd: python3 src/clean_metadata.py --input_bucket 697-datasets --input_file meta_Electronics-0.1-percent.csv
+      --output_file data/cleaned_output.csv
+    outs:
+    - path: data/cleaned_output.csv
+      md5: c1dd052ed38b6a455330723050da94c6
+      size: 5799260
