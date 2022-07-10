@@ -1,7 +1,10 @@
 # To use:
 #   $ conda env create -f environment.yml
 #   $ conda activate 697-env
-# Note: if it fails try running: 
+# Notes:
+# if you update this and want to renew your environment:
+#   $ conda env update -f environment.yml --prune
+# if it fails try running: 
 #   $ source ~/anaconda3/etc/profile.d/conda.sh
 name: 697-env
 dependencies:
@@ -14,3 +17,8 @@ dependencies:
       - matplotlib
       - ipython
       - ipykernel
+      - boto3
+      - fsspec
+      - s3fs
+      - conda-forge
+      - dvc
