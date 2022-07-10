@@ -1,0 +1,8 @@
+stages:
+  data_clean:
+    cmd: python3 src/data_clean.py
+        --input_bucket 697-datasets
+        --input_file meta_Electronics-0.1-percent.csv
+        --output_file data/cleaned_output.csv
+    outs:
+    - data/cleaned_output.csv

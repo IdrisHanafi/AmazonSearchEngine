@@ -1,0 +1,9 @@
+schema: '2.0'
+stages:
+  data_clean:
+    cmd: python3 src/data_clean.py --input_bucket 697-datasets --input_file meta_Electronics-0.1-percent.csv
+      --output_file data/cleaned_output.csv
+    outs:
+    - path: data/cleaned_output.csv
+      md5: 3eefb4bc22639415e22973b74bf52aec
+      size: 6303599
