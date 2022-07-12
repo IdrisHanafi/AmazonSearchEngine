@@ -1,4 +1,5 @@
 import boto3
+import os
 import pandas as pd
 from argparse import ArgumentParser, Namespace
 
@@ -33,6 +34,15 @@ def clean_data(df):
     df = df[features]
     
     return df
+
+def write_to_csv(df, file):
+    """
+    Write the file
+    """
+    filepath = "/".join(file.split("/")[:-1])
+    if filepath:
+        os.makedirs(filepath, exist_ok=True)
+    df.to_csv(file)
 
 def parse_args() -> Namespace:
     """parse arguments"""
@@ -69,4 +79,5 @@ if __name__ == "__main__":
     df = clean_data(df)
     print(df.head())
     
-    df.to_csv(output_file)
+    write_to_csv(df, output_file)
+    # df.to_csv(output_file)
