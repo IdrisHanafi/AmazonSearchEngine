@@ -34,7 +34,7 @@ Moreover, whenever you want to add a new package to our backend, run the followi
 (697_venv) $ pip install <package_name> && pip freeze > requirements.txt
 ```
 
-### 2. Reproduce the output
+### 2. Reproduce the pipeline
 
 Afterwards, you can reproduce the pipeline by running the following:
 
