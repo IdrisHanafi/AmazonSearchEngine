@@ -6,3 +6,7 @@ stages:
         --output_file data/cleaned_output.csv
     outs:
     - data/cleaned_output.csv
+  train_lda:
+    cmd: python3 src/train_lda.py
+        --input_file data/cleaned_output.csv
+        --output_model models/lda_model.joblib

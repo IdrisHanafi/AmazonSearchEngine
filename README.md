@@ -41,3 +41,22 @@ Afterwards, you can reproduce the pipeline by running the following:
 ```
 (697_venv) $ dvc repro
 ```
+
+### Documentations
+
+Step 1. Cleaning Data:
+`clean_metadata` is a script that takes the input meta data file and returns the cleaned one.
+
+```
+python3 src/clean_metadata.py
+        --input_bucket <INPUT BUCKET>
+        --input_file <Input file from S3 within that bucket>
+        --output_file <>
+        
+Example run:
+python3 src/clean_metadata.py
+        --input_bucket 697-datasets
+        --input_file meta_Electronics-0.1-percent.csv
+        --output_file data/cleaned_output.csv
+```
+

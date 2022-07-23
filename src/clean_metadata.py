@@ -11,6 +11,8 @@ def load_data_from_s3(bucket, file_name_and_path):
 
 def clean_data(df):
     """
+    Input:
+        df - The metadata to clean
     Parses the needed features and explodes columns
     """
     features = [
