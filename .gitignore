@@ -1,3 +1,6 @@
+# Mac files
+.DS_STORE
+
 # Venv
 697_venv/
 
@@ -133,3 +136,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore vim files
+*~
+*.swp
+*.swo

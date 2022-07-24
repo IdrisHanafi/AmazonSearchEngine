@@ -14,7 +14,12 @@ You will need the following things properly installed on your computer.
 ### 1. Environment Setup
 
 To get started, Let's setup the environment.
-create a Virtual Environment (`venv`) with `python3`:
+If you've already created a virtual environment like below, then you can just run the following:
+```
+$ source setup.sh
+```
+
+Create a Virtual Environment (`venv`) with `python3`:
 ```
 $ python3 -m venv 697_venv
 ```
@@ -40,6 +45,14 @@ Afterwards, you can reproduce the pipeline by running the following:
 
 ```
 (697_venv) $ dvc repro
+```
+
+### 3. Run the backend
+
+This will run the backend APIs to call our search engines:
+
+```
+(697_venv) $ uvicorn src.backend.main:api --reload
 ```
 
 ### Documentations
