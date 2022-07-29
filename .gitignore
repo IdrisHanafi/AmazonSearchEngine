@@ -5,7 +5,12 @@
 697_venv/
 
 # Datasets
+*.zip
+*.gz
 data/
+datasets/
+index/
+models/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

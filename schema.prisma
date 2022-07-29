@@ -11,11 +11,11 @@ generator db {
 
 model Products {
   id            Int     @id @default(autoincrement())
-  asin          String
-  name          String
-  description   String?
-  price         Float?
+  asin          Int     @unique
+  title         String
+  description   String[]
+  imageURL      String[]
+  category      String[]
+  price         String?
   brand         String?
-  imageUrl      String?
-  categories    String[]
 }

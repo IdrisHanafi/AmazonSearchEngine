@@ -1,24 +1,24 @@
 import asyncio
 from prisma import Prisma
+import pandas as pd
 
 async def main() -> None:
     db = Prisma()
     await db.connect()
 
-    product = await db.products.create(
-        {
-            'asin': '1239DASDC1',
-            'name': 'Test Product Name',
-            'description': 'Test product name',
-            'price': 12.7,
-            'categories': ['ABC', 'DEF'],
-        }
+    chunks = pd.read_json(
+        "datasets/meta_Electronics.json", 
+        lines=True, 
+        chunksize=1000
     )
-    print(f'created post: {product.json(indent=2, sort_keys=True)}')
 
-    found = await db.products.find_unique(where={'id': product.id})
-    assert found is not None
-    print(f'found post: {found.json(indent=2, sort_keys=True)}')
+    for chunk_df in chunks:
+        chunk_df = chunk_df[['asin', 'title', 'description', 'price', 'brand', 'imageURL', 'category']].to_dict('records')
+        product = await db.products.create_many(
+            data=chunk_df,
+            skip_duplicates=True
+        )
+        # break
 
     await db.disconnect()
 

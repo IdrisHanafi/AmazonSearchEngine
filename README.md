@@ -10,6 +10,7 @@ You will need the following things properly installed on your computer.
 
 * [Git](https://git-scm.com/downloads)
 * [Python3.8+](https://www.python.org/downloads/)
+* [PostgreSQL](https://www.postgresql.org/download/)
 
 ### 1. Environment Setup
 
@@ -39,20 +40,38 @@ Moreover, whenever you want to add a new package to our backend, run the followi
 (697_venv) $ pip install <package_name> && pip freeze > requirements.txt
 ```
 
-### 2. Reproduce the pipeline
+### 2. Data and Model Setup
 
-Afterwards, you can reproduce the pipeline by running the following:
+Pull all of the data and models to our current directory:
 
 ```
-(697_venv) $ dvc repro
+(697_venv) $ source ./get_data_and_model.sh
 ```
 
-### 3. Run the backend
+### 3. Database Setup
+
+The database is a Postgres DB. Confirm that you have postgres installed on your
+environment. To do so, create a `.env` file for Prisma to connect to your DB.
+
+Inside the `.env` file, add the following line:
+```
+DATABASE_URL="postgresql://<USERNAME>:<PASSWORD>@localhost:5432/amzn_product_db"
+```
+
+### 4. Run the backend
 
 This will run the backend APIs to call our search engines:
 
 ```
 (697_venv) $ uvicorn src.backend.main:api --reload
+```
+
+### (Optional) Reproduce the pipeline
+
+You can reproduce the pipeline by running the following:
+
+```
+(697_venv) $ dvc repro
 ```
 
 ### Documentations
