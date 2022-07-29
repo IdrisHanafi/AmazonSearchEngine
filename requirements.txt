@@ -47,8 +47,10 @@ gensim==4.2.0
 gitdb==4.0.9
 GitPython==3.1.27
 grandalf==0.6
-h11==0.13.0
+h11==0.12.0
+httpcore==0.15.0
 httptools==0.4.0
+httpx==0.23.0
 idna==3.3
 importlib-resources==5.8.0
 isort==5.10.1
@@ -75,6 +77,7 @@ pathspec==0.9.0
 phonenumbers==8.12.51
 Pillow==9.2.0
 platformdirs==2.5.2
+prisma==0.6.6
 psutil==5.9.1
 pycparser==2.21
 pydantic==1.9.1
@@ -94,6 +97,7 @@ pytz==2022.1
 PyYAML==6.0
 regex==2022.7.9
 requests==2.28.1
+rfc3986==1.5.0
 rich==12.5.1
 ruamel.yaml==0.17.21
 ruamel.yaml.clib==0.2.6

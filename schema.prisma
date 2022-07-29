@@ -1,0 +1,21 @@
+datasource db {
+  // postgresql DB
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator db {
+  provider  = "prisma-client-py"
+  interface = "asyncio"
+}
+
+model Products {
+  id            Int     @id @default(autoincrement())
+  asin          String
+  name          String
+  description   String?
+  price         Float?
+  brand         String?
+  imageUrl      String?
+  categories    String[]
+}
