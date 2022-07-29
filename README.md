@@ -1,5 +1,7 @@
 # 697 Capstone: Amazon Product Search Engine 
 
+Built by: James Rosenkoetter, Frederic Gigou, Curtis Guo, Idris Hanafi
+
 ## Overview
 
 This is the repository that includes the code, data, and model components for the engine.
