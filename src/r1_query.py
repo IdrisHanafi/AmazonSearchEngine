@@ -40,6 +40,10 @@ from gensim import utils
 from bs4 import BeautifulSoup as BSHTML
 from gensim.parsing.preprocessing import preprocess_string, STOPWORDS #, remove_stopword_tokens
 
+from db.query_product import (
+    query_products_from_r1_index
+)
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 class r1_dumb:
@@ -52,8 +56,8 @@ class r1_dumb:
             self.index_category = pickle.load(filehandle)
         
         # load index/category   
-        with open(f"{dir_path}/../index/R1_asin_labels.data", "rb") as filehandle:
-            self.asin_labels = np.array(pickle.load(filehandle))
+        # with open(f"{dir_path}/../index/R1_asin_labels.data", "rb") as filehandle:
+            # self.asin_labels = np.array(pickle.load(filehandle))
             
         self.mtx_load=self.load_sparse_csr(f"{dir_path}/../datasets/r1_data/R1_Rank_mtx")
         self.cols = ["top_features","top_value","top_sellers","top_ratings"]
@@ -80,7 +84,7 @@ class r1_dumb:
         
         return simi
                     
-    def lambda_R1(self, q, cat_idx, filters):
+    async def lambda_R1(self, q, cat_idx, filters):
         # retrieving data
         info = self.big_index[cat_idx]
         cat = info[0]
@@ -110,7 +114,9 @@ class r1_dumb:
         print(" Category: {}\n Filter: '{}'".format(cat, filters))
         print(" ")
 
-        result = self.asin_labels[res_index]
+        # result = self.asin_labels[res_index]
+
+        result = await query_products_from_r1_index(res_index.tolist())
         return result
 
 def test_run():
@@ -127,10 +133,7 @@ def test_run():
         result = obj.lambda_R1(query, cat_idx, filters)
 
         for i, element in enumerate(result):
-            try:
-                print(i+1, element[0], element[1][:108])
-            except:
-                print(i+1, element[0], element[1])
+            print(element)
 
 if __name__=="__main__":
     test_run()

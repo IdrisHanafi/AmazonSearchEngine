@@ -10,12 +10,19 @@ generator db {
 }
 
 model Products {
-  id            Int     @id @default(autoincrement())
-  asin          Int     @unique
+  id            Int         @id @default(autoincrement())
+  asin          String      @unique
   title         String
   description   String[]
   imageURL      String[]
   category      String[]
   price         String?
   brand         String?
+}
+
+model R1DataIndex {
+  id                Int         @id @default(autoincrement())
+  asin              String
+  title             String
+  category_list     String[]
 }
