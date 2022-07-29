@@ -58,6 +58,11 @@ Inside the `.env` file, add the following line:
 DATABASE_URL="postgresql://<USERNAME>:<PASSWORD>@localhost:5432/amzn_product_db"
 ```
 
+Afterwards, migrate the schemas into the DB:
+```
+(697_venv) $ prisma db push
+```
+
 ### 4. Run the backend
 
 This will run the backend APIs to call our search engines:
