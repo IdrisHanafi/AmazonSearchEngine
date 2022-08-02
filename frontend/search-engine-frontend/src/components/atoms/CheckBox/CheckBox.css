@@ -1,0 +1,26 @@
+.customCheckBox {
+  background-color: #FFFFFF;
+  cursor: pointer;
+  color: #2A2A2A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  border-radius: 10px;
+}
+
+.customCheckBoxSelected {
+  background-color: #00B4CC;
+  cursor: pointer;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  border-radius: 10px;
+}
+
+.customCheckBox:hover {
+  background-color: #00B4CC;
+  color: #FFFFFF;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 // import logo from '../../logo.svg';
 import mcrib from '../../mcrib.svg';
@@ -6,8 +6,46 @@ import './App.css';
 
 // import atoms
 import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAndButton";
+import Filters from "../../components/molecules/Filters/Filters";
+import CheckBox from "../../components/atoms/CheckBox/CheckBox";
+
+const items = [
+  { 
+    label: "Subcategory 1",
+    index: 200,
+  },
+  { 
+    label: "Subcategory 2",
+    index: 202,
+  },
+  { 
+    label: "Subcategory 3",
+    index: 203,
+  },
+];
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedFilter, setSelectedFilter] = useState(null);
+
+  function onClickCheckBox(indexPressed) {
+    console.log(`clicked checkbox ${indexPressed}!`);
+    if (indexPressed === selectedCategory) {
+      setSelectedCategory(null)
+    } else {
+      setSelectedCategory(indexPressed)
+    }
+  }
+
+  function onClickFilter(newSelectedFilter) {
+    console.log(`clicked filter: ${newSelectedFilter}!`);
+    if (selectedFilter === newSelectedFilter) {
+      setSelectedFilter(null)
+    } else {
+      setSelectedFilter(newSelectedFilter)
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -21,6 +59,16 @@ function App() {
         <div className="parentSearch" >
           <SearchAndButton />
         </div>
+
+        <p>
+        Please confirm which subcategory you're looking for?
+        </p>
+        <CheckBox selectedIndex={selectedCategory} onClick={onClickCheckBox} items={items}/>
+
+        <p>
+        Select your preferred filter:
+        </p>
+        <Filters selectedFilter={selectedFilter} onClick={onClickFilter}/>
       </div>
 
     </div>
