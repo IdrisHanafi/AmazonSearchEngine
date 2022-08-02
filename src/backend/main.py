@@ -16,6 +16,7 @@ origins = [
     "http://ec2-18-220-136-214.us-east-2.compute.amazonaws.com/",
     "http://localhost",
     "http://localhost:3000",
+    "*",
 ]
 
 api.add_middleware(
