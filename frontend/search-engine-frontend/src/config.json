@@ -1,0 +1,6 @@
+{
+    "ENVIRONMENT": "localhost",
+    "END_POINT": "http://localhost:8000/",
+    "LOCAL_END_POINT": "http://localhost:8000/",
+    "PROD_END_POINT": "http://ec2-18-220-136-214.us-east-2.compute.amazonaws.com:8001/"
+}

@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 // import logo from '../../logo.svg';
 import mcrib from '../../mcrib.svg';
 import './App.css';
+
+// import services
+import getSubcategory from "../../services/getSubcategory";
 
 // import atoms
 import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAndButton";
@@ -25,8 +28,25 @@ const items = [
 ];
 
 function App() {
+  const [currText, setText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
+
+	function onSubmit() {
+    console.log("HELLO");
+    console.log(currText);
+    getSubcategoryCall(currText);
+  }
+
+  function getSubcategoryCall(queryString) {
+    getSubcategory({ queryString }).then((res) => {
+      console.log("Successfully got response");
+      console.log(res);
+    }).catch((error) => {
+      console.log("error");
+      console.log(error)
+    });
+  }
 
   function onClickCheckBox(indexPressed) {
     console.log(`clicked checkbox ${indexPressed}!`);
@@ -57,7 +77,7 @@ function App() {
           Amazon Product Search Engine
         </p>
         <div className="parentSearch" >
-          <SearchAndButton />
+          <SearchAndButton currText={currText} setText={setText} onSubmit={onSubmit} />
         </div>
 
         <p>

@@ -6,13 +6,7 @@ import "./SearchAndButton.css";
 import Button from "../../atoms/Button/Button";
 import Input from "../../atoms/Input/Input";
 
-function SearchAndButton() {
-  const [currText, setText] = useState("");
-
-	function onSubmit() {
-    console.log("HELLO");
-    console.log(currText);
-  }
+function SearchAndButton({ currText, setText, onSubmit }) {
 
   function handleTextChange(e) {
     setText(e.target.value);

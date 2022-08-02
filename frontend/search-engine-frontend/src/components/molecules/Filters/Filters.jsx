@@ -8,7 +8,7 @@ function Filters({ items, selectedFilter, onClick }) {
     <div 
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         width: "fit-content",
         minWidth: "60%",
         maxWidth: "70%",
