@@ -1,5 +1,6 @@
 import time
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from src.m2_query import (
     tfidf
 )
@@ -11,6 +12,19 @@ tfidf_object = tfidf()
 r1_obj = r1_dumb(extra_feature=True) 
 
 api = FastAPI()
+origins = [
+    "http://ec2-18-220-136-214.us-east-2.compute.amazonaws.com/",
+    "http://localhost",
+    "http://localhost:3000",
+]
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @api.get("/")
 async def root():

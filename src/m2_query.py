@@ -88,11 +88,16 @@ class tfidf:
         # print(results)
         # return results, np.round(np.max(simi),2)
 
-        result_obj = {}
+        result_obj = []
         for res_item in results:
-            result_obj[self.category_index[res_item]] = res_item
+            item_obj = {
+                "label": res_item,
+                "index": self.category_index[res_item],
+            }
+            result_obj.append(item_obj)
+            # result_obj[self.category_index[res_item]] = res_item
         
-        return result_obj, results, np.round(np.max(simi),2)
+        return result_obj, results, np.round(np.max(simi), 2)
 
 
 def make_calls():

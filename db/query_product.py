@@ -13,9 +13,19 @@ async def query_products_from_r1_index(indexes):
         }
     )
 
-    await db.disconnect()
+    product_asins_list = [product.dict()['asin'] for product in product_asins]
 
-    res = [product.dict() for product in product_asins]
+    product_details = await db.products.find_many(
+        where={
+            'asin': {
+                'in': product_asins_list
+            }
+        }
+    )
+
+    res = [product.dict() for product in product_details]
+
+    await db.disconnect()
 
     return res
 
