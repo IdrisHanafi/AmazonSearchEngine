@@ -1,6 +1,9 @@
 # Mac files
 .DS_STORE
 
+# Frontend
+frontend/search-engine-frontend/node_modules
+
 # Venv
 697_venv/
 
