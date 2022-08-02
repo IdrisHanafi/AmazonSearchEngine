@@ -1,0 +1,32 @@
+.filterButtons {
+  background-color: #FFFFFF;
+  cursor: pointer;
+  color: #2A2A2A;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  padding: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: thin;
+}
+
+.filterButtonSelected {
+  background-color: #00B4CC;
+  cursor: pointer;
+  color: #FFFFFF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  padding: 10px;
+  border-style: solid;
+  border-color: #00B4CC;
+  border-width: thin;
+}
+
+.filterButtons:hover {
+  background-color: #00B4CC;
+  color: #FFFFFF;
+}
