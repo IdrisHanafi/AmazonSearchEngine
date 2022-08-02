@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // import logo from '../../logo.svg';
 import mcrib from '../../mcrib.svg';
@@ -6,42 +6,69 @@ import './App.css';
 
 // import services
 import getSubcategory from "../../services/getSubcategory";
+import getProducts from "../../services/getProducts";
 
-// import atoms
+// import components
 import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAndButton";
 import Filters from "../../components/molecules/Filters/Filters";
 import CheckBox from "../../components/atoms/CheckBox/CheckBox";
-
-const items = [
-  { 
-    label: "Subcategory 1",
-    index: 200,
-  },
-  { 
-    label: "Subcategory 2",
-    index: 202,
-  },
-  { 
-    label: "Subcategory 3",
-    index: 203,
-  },
-];
+import LineBreak from "../../components/atoms/LineBreak/LineBreak";
+import ProductInfoList from "../../components/organisms/ProductInfoList/ProductInfoList";
 
 function App() {
   const [currText, setText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [availableCategories, setAvailableCategories] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
+  const [foundProducts, setFoundProducts] = useState(null);
+
+  function resetCurrSelections() {
+    setSelectedCategory(null);
+    setSelectedFilter(null);
+    setAvailableCategories(null)
+    setFoundProducts(null)
+  }
 
 	function onSubmit() {
-    console.log("HELLO");
+    console.log("SUBMITTING");
     console.log(currText);
     getSubcategoryCall(currText);
+  }
+
+	function setTextCall(text) {
+    resetCurrSelections();
+    setText(text);
   }
 
   function getSubcategoryCall(queryString) {
     getSubcategory({ queryString }).then((res) => {
       console.log("Successfully got response");
       console.log(res);
+      const subcategoriesFound = res.subcategory_found;
+      setAvailableCategories(subcategoriesFound);
+    }).catch((error) => {
+      console.log("error");
+      console.log(error)
+    });
+  }
+
+  useEffect(() => {
+    // TODO: Only call search when the user press enter
+    if (currText && selectedCategory !== null && selectedFilter) {
+      const categoryId = availableCategories[selectedCategory].index;
+      console.log(currText, categoryId, selectedCategory, selectedFilter);
+      getProductsCall(currText, categoryId, selectedFilter);
+    }
+  }, [currText, selectedCategory, availableCategories, selectedFilter])
+
+
+  function getProductsCall(queryString, categoryId, filterType) {
+    console.log("GETTING PRODUCT API")
+    getProducts({ queryString, categoryId, filterType }).then((res) => {
+      console.log("Successfully got response");
+      console.log(res);
+      const productsFound = res.result;
+      setFoundProducts(productsFound);
     }).catch((error) => {
       console.log("error");
       console.log(error)
@@ -77,18 +104,33 @@ function App() {
           Amazon Product Search Engine
         </p>
         <div className="parentSearch" >
-          <SearchAndButton currText={currText} setText={setText} onSubmit={onSubmit} />
+          <SearchAndButton currText={currText} setText={setTextCall} onSubmit={onSubmit} />
         </div>
 
-        <p>
-        Please confirm which subcategory you're looking for?
-        </p>
-        <CheckBox selectedIndex={selectedCategory} onClick={onClickCheckBox} items={items}/>
+        {availableCategories && (
+          <>
+            <LineBreak />
+            <p style={{ fontWeight: "bold" }}>
+            Please confirm which subcategory you're looking for?
+            </p>
+            <CheckBox 
+              selectedIndex={selectedCategory} 
+              onClick={onClickCheckBox} 
+              items={availableCategories}
+            />
 
-        <p>
-        Select your preferred filter:
-        </p>
-        <Filters selectedFilter={selectedFilter} onClick={onClickFilter}/>
+            <LineBreak />
+            <p style={{ fontWeight: "bold" }}>
+            Select your preferred filter:
+            </p>
+            <Filters 
+              selectedFilter={selectedFilter} 
+              onClick={onClickFilter}
+            />
+          </>
+        )}
+
+        <ProductInfoList products={foundProducts} />
       </div>
 
     </div>

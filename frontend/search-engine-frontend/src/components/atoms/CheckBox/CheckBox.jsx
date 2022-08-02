@@ -16,11 +16,11 @@ function CheckBox({ items, selectedIndex, onClick }) {
           <div 
             key={item.index}
             onClick={() => onClick(index)} 
-          className={
-            index === selectedIndex ? "customCheckBoxSelected" : "customCheckBox"
+            className={
+              index === selectedIndex ? "customCheckBoxSelected" : "customCheckBox"
             }
           > 
-            {item.label}
+            {item.label.join(" > ")}
           </div>
 
         )

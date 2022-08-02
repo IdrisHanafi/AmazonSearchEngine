@@ -9,6 +9,7 @@
   padding: 10px;
   border-style: solid;
   border-color: black;
+  border-width: thin;
 }
 
 .filterButtonSelected {
@@ -21,7 +22,8 @@
   height: 35px;
   padding: 10px;
   border-style: solid;
-  border-color: black;
+  border-color: #00B4CC;
+  border-width: thin;
 }
 
 .filterButtons:hover {
