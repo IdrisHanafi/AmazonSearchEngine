@@ -101,11 +101,14 @@ function App() {
 
       <div className="contentBox">
         <p>
-          Amazon Product Search Engine
+          Amazon Electronic Search Engine
         </p>
         <div className="parentSearch" >
           <SearchAndButton currText={currText} setText={setTextCall} onSubmit={onSubmit} />
         </div>
+        <p style={{ fontWeight: "bold" }}>
+          NOTE: This search engine only contains electronics and products from 2018 and earlier.
+        </p>
 
         {availableCategories && (
           <>
