@@ -13,10 +13,18 @@ import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAn
 import Filters from "../../components/molecules/Filters/Filters";
 import CheckBox from "../../components/atoms/CheckBox/CheckBox";
 import LineBreak from "../../components/atoms/LineBreak/LineBreak";
+import ModelFilter from "../../components/molecules/ModelFilter/ModelFilter";
 import ProductInfoList from "../../components/organisms/ProductInfoList/ProductInfoList";
 
 function App() {
   const [currText, setText] = useState("");
+  const [errorMsg, setError] = useState(null);
+
+  // Model Selections
+  const [selectedSubcategoryModel, setSelectedSubcategoryModel] = useState(null);
+  const [selectedRankingAlgorithm, setSelectedRankingAlgorithm] = useState(null);
+
+  // Selections
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [availableCategories, setAvailableCategories] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
@@ -29,10 +37,22 @@ function App() {
     setFoundProducts(null)
   }
 
+  function validateSearch() {
+    if (currText.length > 3 && selectedSubcategoryModel && selectedRankingAlgorithm) {
+      setError(null);
+      return true;
+    }
+
+    setError("Make sure query length is greater than 3 characters and you select both models");
+    return false;
+  }
+
 	function onSubmit() {
     console.log("SUBMITTING");
-    console.log(currText);
-    getSubcategoryCall(currText);
+    console.log(currText, selectedSubcategoryModel, selectedRankingAlgorithm);
+    if (validateSearch()) {
+      getSubcategoryCall(currText);
+    }
   }
 
 	function setTextCall(text) {
@@ -106,9 +126,28 @@ function App() {
         <div className="parentSearch" >
           <SearchAndButton currText={currText} setText={setTextCall} onSubmit={onSubmit} />
         </div>
+
+        <ModelFilter 
+          label="Select the subcategory model" 
+          selectedValue={selectedSubcategoryModel}
+          options="subcategory"
+          onChange={setSelectedSubcategoryModel}
+        />
+        <ModelFilter 
+          label="Select the ranking algorithm model" 
+          selectedValue={selectedRankingAlgorithm}
+          options="ranking"
+          onChange={setSelectedRankingAlgorithm}
+        />
+
         <p style={{ fontWeight: "bold" }}>
           NOTE: This search engine only contains electronics and products from 2018 and earlier.
         </p>
+        {errorMsg && (
+          <p style={{ color: "red", fontWeight: "bold" }}>
+            ERROR: {errorMsg}
+          </p>
+        )}
 
         {availableCategories && (
           <>
