@@ -100,8 +100,8 @@ class TfIdfThreshold:
         with open(f'{dir_path}/../datasets/m2_plus_data/M2R1_asin_category.pickle', 'rb') as filehandle:
             self.asin_category = pickle.load(filehandle)
             
-        with open(f'{dir_path}/../index/R1_index_asin.pickle', 'rb') as filehandle:
-            self.index_asin = pickle.load(filehandle)
+        # with open(f'{dir_path}/../index/R1_index_asin.pickle', 'rb') as filehandle:
+        #     self.index_asin = pickle.load(filehandle)
             
     def load_sparse_csr(self, filename):
         # here we need to add .npz extension manually
@@ -177,6 +177,7 @@ class TfIdfThreshold:
 
         result_obj = []
         for curr_idx in idx:
+            curr_idx = int(curr_idx)
             item_obj = {
                 "label": self.index_category[curr_idx],
                 "index": curr_idx,

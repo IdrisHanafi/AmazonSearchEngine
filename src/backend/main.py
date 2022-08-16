@@ -118,7 +118,7 @@ async def get_products_v2(
 ):
     try:
         start_time = time.time()
-        result = r2_obj.lambda_R2(user_query, category_id, filter_type)
+        result = await r2_obj.lambda_R2(user_query, category_id, filter_type)
         end_time = time.time()
         elapsed_time = end_time - start_time
         return {

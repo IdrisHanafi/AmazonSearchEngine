@@ -33,6 +33,10 @@ from gensim import utils
 from bs4 import BeautifulSoup as BSHTML
 from gensim.parsing.preprocessing import preprocess_string, STOPWORDS #, remove_stopword_tokens
 
+from db.query_product import (
+    query_products_from_r1_index
+)
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 ''' Changes versus R1 are:
@@ -52,8 +56,8 @@ class R2Smart:
             self.index_category = pickle.load(filehandle)
         
         # load index/category   
-        with open(f"{dir_path}/../index/R1_asin_labels.data", 'rb') as filehandle:
-            self.asin_labels = np.array(pickle.load(filehandle))
+        # with open(f"{dir_path}/../index/R1_asin_labels.data", 'rb') as filehandle:
+        #     self.asin_labels = np.array(pickle.load(filehandle))
         
         ################# CHANGE TO R2 RANK #######################
         self.mtx_load=self.load_sparse_csr(f"{dir_path}/../datasets/r2_data/R2_Rank_mtx")
@@ -83,7 +87,7 @@ class R2Smart:
         
         return simi
                     
-    def lambda_R2(self, q, cat_idx, filters):
+    async def lambda_R2(self, q, cat_idx, filters):
         # retrieving asin ranking data based on the big index of the category/asin
         info = self.big_index[cat_idx]
         cat = info[0]
@@ -117,7 +121,8 @@ class R2Smart:
         except:
             res_index = np.argsort(-filtered_arr.reshape(1,-1))[0] + start
 
-        result = self.asin_labels[res_index]
+        # result = self.asin_labels[res_index]
+        result = await query_products_from_r1_index(res_index.tolist())
 
         return result
 
