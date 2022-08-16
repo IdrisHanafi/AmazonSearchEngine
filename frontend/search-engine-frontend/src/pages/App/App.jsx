@@ -60,16 +60,14 @@ function App() {
     setText(text);
   }
 
-  function getSubcategoryCall(queryString) {
-    getSubcategory({ queryString }).then((res) => {
-      console.log("Successfully got response");
-      console.log(res);
-      const subcategoriesFound = res.subcategory_found;
-      setAvailableCategories(subcategoriesFound);
-    }).catch((error) => {
-      console.log("error");
-      console.log(error)
-    });
+	function setSelectedSubcategoryModelCall(value) {
+    resetCurrSelections();
+    setSelectedSubcategoryModel(value);
+  }
+
+	function setSelectedRankingAlgorithmCall(value) {
+    resetCurrSelections();
+    setSelectedRankingAlgorithm(value);
   }
 
   useEffect(() => {
@@ -81,10 +79,21 @@ function App() {
     }
   }, [currText, selectedCategory, availableCategories, selectedFilter])
 
+  function getSubcategoryCall(queryString) {
+    getSubcategory({ selectedSubcategoryModel, queryString }).then((res) => {
+      console.log("Successfully got response");
+      console.log(res);
+      const subcategoriesFound = res.subcategory_found;
+      setAvailableCategories(subcategoriesFound);
+    }).catch((error) => {
+      console.log("error");
+      console.log(error)
+    });
+  }
 
   function getProductsCall(queryString, categoryId, filterType) {
     console.log("GETTING PRODUCT API")
-    getProducts({ queryString, categoryId, filterType }).then((res) => {
+    getProducts({ selectedRankingAlgorithm, queryString, categoryId, filterType }).then((res) => {
       console.log("Successfully got response");
       console.log(res);
       const productsFound = res.result;
@@ -131,13 +140,13 @@ function App() {
           label="Select the subcategory model" 
           selectedValue={selectedSubcategoryModel}
           options="subcategory"
-          onChange={setSelectedSubcategoryModel}
+          onChange={setSelectedSubcategoryModelCall}
         />
         <ModelFilter 
           label="Select the ranking algorithm model" 
           selectedValue={selectedRankingAlgorithm}
           options="ranking"
-          onChange={setSelectedRankingAlgorithm}
+          onChange={setSelectedRankingAlgorithmCall}
         />
 
         <p style={{ fontWeight: "bold" }}>
@@ -167,6 +176,7 @@ function App() {
             </p>
             <Filters 
               selectedFilter={selectedFilter} 
+              selectedFilterOptions={selectedRankingAlgorithm} 
               onClick={onClickFilter}
             />
           </>

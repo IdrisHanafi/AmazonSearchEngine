@@ -1,17 +1,6 @@
 import Dropdown from "../../atoms/Dropdown/Dropdown";
 
-const modelOptions = {
-  "subcategory": [
-    { value: "M1", label: "M1 - LSI" },
-    { value: "M2", label: "M2 - TF-IDF" },
-    { value: "M2+", label: "M2+ - TF-IDF ASIN" },
-  ],
-  "ranking": [
-    { value: "R1", label: "R1 - Baseline Ranking Algorithm" },
-    { value: "R2", label: "R2 - Review Sentiment Algorithm" },
-    { value: "R3", label: "R3 - User-Product Context" },
-  ]
-}
+import { modelOptions } from "../../../modelSettings";
 
 function ModelFilter({
   label,

@@ -1,9 +1,12 @@
 import React from "react";
 
 import "./Filters.css"
+import { productFilters } from "../../../modelSettings";
 
 // import componenets
-function Filters({ items, selectedFilter, onClick }) {
+function Filters({ selectedFilterOptions, selectedFilter, onClick }) {
+  let productFilter = productFilters[selectedFilterOptions];
+
   return (
     <div 
       style={{
@@ -14,7 +17,7 @@ function Filters({ items, selectedFilter, onClick }) {
         maxWidth: "70%",
       }}
     >
-      {items.map((item, index) => {
+      {productFilter.map((item, index) => {
         return (
           <div 
             style={{
@@ -22,7 +25,7 @@ function Filters({ items, selectedFilter, onClick }) {
                 borderTopLeftRadius: "10px",
                 borderBottomLeftRadius: "10px",
               } : {}),
-              ...(index === items.length - 1 ? {
+              ...(index === productFilter.length - 1 ? {
                 borderTopRightRadius: "10px",
                 borderBottomRightRadius: "10px",
               } : {}),
@@ -45,24 +48,7 @@ function Filters({ items, selectedFilter, onClick }) {
 }
 
 Filters.defaultProps = {
-  items: [
-    { 
-      label: "Top Features",
-      key: "top_features",
-    },
-    { 
-      label: "Top Value",
-      key: "top_value",
-    },
-    { 
-      label: "Top Sellers",
-      key: "top_sellers",
-    },
-    { 
-      label: "Top Ratings",
-      key: "top_ratings",
-    },
-  ]
+  selectedFilterOptions: "R1"
 }
 
 export default Filters;

@@ -46,7 +46,7 @@ from db.query_product import (
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-class r1_dumb:
+class R1Baseline:
     def __init__(self, extra_feature):
         # load asin/title
         with open(f"{dir_path}/../index/M2R1_big_dico.pickle", "rb") as filehandle:
@@ -121,7 +121,7 @@ class r1_dumb:
 
 def test_run():
     smart = True
-    obj = r1_dumb(extra_feature = smart) 
+    obj = R1Baseline(extra_feature = smart) 
     dico = {'a tablet Apple 64GB': 604}
 
     liste_filters = ["top_features","top_value","top_sellers","top_ratings"]
