@@ -13,10 +13,18 @@ import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAn
 import Filters from "../../components/molecules/Filters/Filters";
 import CheckBox from "../../components/atoms/CheckBox/CheckBox";
 import LineBreak from "../../components/atoms/LineBreak/LineBreak";
+import ModelFilter from "../../components/molecules/ModelFilter/ModelFilter";
 import ProductInfoList from "../../components/organisms/ProductInfoList/ProductInfoList";
 
 function App() {
   const [currText, setText] = useState("");
+  const [errorMsg, setError] = useState(null);
+
+  // Model Selections
+  const [selectedSubcategoryModel, setSelectedSubcategoryModel] = useState(null);
+  const [selectedRankingAlgorithm, setSelectedRankingAlgorithm] = useState(null);
+
+  // Selections
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [availableCategories, setAvailableCategories] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
@@ -29,10 +37,22 @@ function App() {
     setFoundProducts(null)
   }
 
+  function validateSearch() {
+    if (currText.length > 3 && selectedSubcategoryModel && selectedRankingAlgorithm) {
+      setError(null);
+      return true;
+    }
+
+    setError("Make sure query length is greater than 3 characters and you select both models");
+    return false;
+  }
+
 	function onSubmit() {
     console.log("SUBMITTING");
-    console.log(currText);
-    getSubcategoryCall(currText);
+    console.log(currText, selectedSubcategoryModel, selectedRankingAlgorithm);
+    if (validateSearch()) {
+      getSubcategoryCall(currText);
+    }
   }
 
 	function setTextCall(text) {
@@ -40,16 +60,14 @@ function App() {
     setText(text);
   }
 
-  function getSubcategoryCall(queryString) {
-    getSubcategory({ queryString }).then((res) => {
-      console.log("Successfully got response");
-      console.log(res);
-      const subcategoriesFound = res.subcategory_found;
-      setAvailableCategories(subcategoriesFound);
-    }).catch((error) => {
-      console.log("error");
-      console.log(error)
-    });
+	function setSelectedSubcategoryModelCall(value) {
+    resetCurrSelections();
+    setSelectedSubcategoryModel(value);
+  }
+
+	function setSelectedRankingAlgorithmCall(value) {
+    resetCurrSelections();
+    setSelectedRankingAlgorithm(value);
   }
 
   useEffect(() => {
@@ -61,10 +79,21 @@ function App() {
     }
   }, [currText, selectedCategory, availableCategories, selectedFilter])
 
+  function getSubcategoryCall(queryString) {
+    getSubcategory({ selectedSubcategoryModel, queryString }).then((res) => {
+      console.log("Successfully got response");
+      console.log(res);
+      const subcategoriesFound = res.subcategory_found;
+      setAvailableCategories(subcategoriesFound);
+    }).catch((error) => {
+      console.log("error");
+      console.log(error)
+    });
+  }
 
   function getProductsCall(queryString, categoryId, filterType) {
     console.log("GETTING PRODUCT API")
-    getProducts({ queryString, categoryId, filterType }).then((res) => {
+    getProducts({ selectedRankingAlgorithm, queryString, categoryId, filterType }).then((res) => {
       console.log("Successfully got response");
       console.log(res);
       const productsFound = res.result;
@@ -106,9 +135,28 @@ function App() {
         <div className="parentSearch" >
           <SearchAndButton currText={currText} setText={setTextCall} onSubmit={onSubmit} />
         </div>
+
+        <ModelFilter 
+          label="Select the subcategory model" 
+          selectedValue={selectedSubcategoryModel}
+          options="subcategory"
+          onChange={setSelectedSubcategoryModelCall}
+        />
+        <ModelFilter 
+          label="Select the ranking algorithm model" 
+          selectedValue={selectedRankingAlgorithm}
+          options="ranking"
+          onChange={setSelectedRankingAlgorithmCall}
+        />
+
         <p style={{ fontWeight: "bold" }}>
           NOTE: This search engine only contains electronics and products from 2018 and earlier.
         </p>
+        {errorMsg && (
+          <p style={{ color: "red", fontWeight: "bold" }}>
+            ERROR: {errorMsg}
+          </p>
+        )}
 
         {availableCategories && (
           <>
@@ -128,6 +176,7 @@ function App() {
             </p>
             <Filters 
               selectedFilter={selectedFilter} 
+              selectedFilterOptions={selectedRankingAlgorithm} 
               onClick={onClickFilter}
             />
           </>

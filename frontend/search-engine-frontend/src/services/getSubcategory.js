@@ -1,8 +1,14 @@
 import axios from "axios";
 import config from "../config.json";
 
-function getSubcategory({ queryString }) {
-  const url = `${config.END_POINT}get_subcategory/${queryString}`;
+const modelEndpoints = {
+  "M2": "get_subcategory/",
+  "M2+": "get_subcategory/v2/",
+  // "M1": "get_products/v3/",
+}
+
+function getSubcategory({ selectedSubcategoryModel, queryString }) {
+  const url = `${config.END_POINT}${modelEndpoints[selectedSubcategoryModel]}${queryString}`;
 
   return new Promise((resolve, reject) => {
     axios.get(url).then((res) => {

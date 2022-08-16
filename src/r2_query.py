@@ -1,10 +1,3 @@
-"""
-R1 Models
-Dependencies:
-- "datasets/R1_Rank_mtx"
-- "index/R1_asin_labels.data"
-- "index/M2R1_big_dico.pickle"
-"""
 import pandas as pd
 import random
 import nltk
@@ -46,7 +39,14 @@ from db.query_product import (
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-class R1Baseline:
+''' Changes versus R1 are:
+1- It supports the following features ["top_quality","top_value","top_sellers","top_ratings","top_reviews", "top_matches"]
+2- "top_matches" should be the default instead of one of the others "top" as is it the purest from a similarity standpoint
+3- IS smart, as it brings back the initial query and factors in similarity
+4- IS even smarter for "top_value" and "top_quality" and "top_reviews" as we are extractinv the sentiment from the reviews.
+'''
+
+class R2Smart:
     def __init__(self, extra_feature):
         # load asin/title
         with open(f"{dir_path}/../index/M2R1_big_dico.pickle", "rb") as filehandle:
@@ -56,11 +56,14 @@ class R1Baseline:
             self.index_category = pickle.load(filehandle)
         
         # load index/category   
-        # with open(f"{dir_path}/../index/R1_asin_labels.data", "rb") as filehandle:
-            # self.asin_labels = np.array(pickle.load(filehandle))
-            
-        self.mtx_load=self.load_sparse_csr(f"{dir_path}/../datasets/r1_data/R1_Rank_mtx")
-        self.cols = ["top_features","top_value","top_sellers","top_ratings"]
+        # with open(f"{dir_path}/../index/R1_asin_labels.data", 'rb') as filehandle:
+        #     self.asin_labels = np.array(pickle.load(filehandle))
+        
+        ################# CHANGE TO R2 RANK #######################
+        self.mtx_load=self.load_sparse_csr(f"{dir_path}/../datasets/r2_data/R2_Rank_mtx")
+        self.cols = ["top_quality","top_value","top_sellers","top_ratings","top_reviews"]
+        ##########################################################
+        
         self.extra_feature = extra_feature
         self.stemmer = PorterStemmer() 
         
@@ -84,56 +87,82 @@ class R1Baseline:
         
         return simi
                     
-    async def lambda_R1(self, q, cat_idx, filters):
-        # retrieving data
+    async def lambda_R2(self, q, cat_idx, filters):
+        # retrieving asin ranking data based on the big index of the category/asin
         info = self.big_index[cat_idx]
         cat = info[0]
         start = info[1]
         finish = info[2]
-        col_num = self.cols.index(filters)
+        try:
+            col_num = self.cols.index(filters)
+        except:
+            col_num = self.cols.index("top_ratings")
 
         arr = self.mtx_load
         filtered_arr = arr[start:finish,col_num].toarray()
-        # print("filtered", filtered_arr.shape)
         
         if self.extra_feature:
             arr1 = self.tfidf_mtx[start:finish,]
             simi = self.extra_feat(q, arr1)
-            # weight can be adjusted
-            # print("simi", simi.shape)
             
-            filtered_arr = (filtered_arr * .3) + (simi *.7)
-            # print("filtered_arr", filtered_arr.shape)
+            # weight can be adjusted
+            weight = 0.2 # is the weight of the ranking in the returned results
+            
+            # if the feature "top_matches" rank is selected, then weight = 0 to other factors
+            # and rank is returned based on similarity only
+            top_matches = filters != "top_matches"
+            
+            #############################################################
+            filtered_arr = (filtered_arr * weight * top_matches) + (simi)
+            #############################################################
         
         try:
             res_index = np.argsort(-filtered_arr.reshape(1,-1))[0][:7] + start
         except:
             res_index = np.argsort(-filtered_arr.reshape(1,-1))[0] + start
-        print(" ")
-        print(" Query: '{}'".format(q))
-        print(" Category: {}\n Filter: '{}'".format(cat, filters))
-        print(" ")
 
         # result = self.asin_labels[res_index]
-
         result = await query_products_from_r1_index(res_index.tolist())
+
         return result
 
-def test_run():
-    smart = True
-    obj = R1Baseline(extra_feature = smart) 
-    dico = {'a tablet Apple 64GB': 604}
+dico ={
+    'black backpack for laptop': 628,
+    'European AC DC adapter': 91,
+    'headphone': 803,
+    'I want a Kingston sd card': 536,
+    'dell inspiron laptop': 699,
+    'canon camera': 153,
+    'screen for laptop': 709,
+    'garmin sports watch': 984,
+    'a tablet Apple': 604,
+    'a television': 972,
+    'microsoft office': 525,
+    'Apple laptop case': 650,
+    '64GB kingston SD card': 536,
+    'books': 1010,
+    'The holy bible': 740,
+    'a garmin sports watch forerunner': 798,
+    'a waterproof watch garmin': 984
+}
 
-    liste_filters = ["top_features","top_value","top_sellers","top_ratings"]
+if __name__=="__main__":
+    smart = True
+    obj = R2Smart(extra_feature = smart) 
+    liste_filters = obj.cols
+
     for query, category in dico.items():
         # randomly selects a filter value
         cat_idx = category
-        filters = random.choice(tuple(liste_filters))
-        filters = "top_sellers"
-        result = obj.lambda_R1(query, cat_idx, filters)
+        # filters = random.choice(tuple(liste_filters))
+        filters = "top_matches"
+        print(" ")
+        print(" Query: '{}'".format(query))
+        print(" Category: {}, Filter: {}".format(obj.index_category[cat_idx], filters))
+        result = obj.lambda_R2(query, cat_idx, filters)
 
-        for i, element in enumerate(result):
-            print(element)
-
-if __name__=="__main__":
-    test_run()
+        for i, element in enumerate(result):  
+            try:
+                print(i+1, element[0], element[1][:108])
+            except:
+                print(i+1, element[0], element[1])
