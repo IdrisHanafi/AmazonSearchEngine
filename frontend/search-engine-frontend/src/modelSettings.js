@@ -32,6 +32,10 @@ export const productFilters = {
   ],
   R2: [
     { 
+      label: "Top Matches",
+      key: "top_matches",
+    },
+    { 
       label: "Top Quality",
       key: "top_quality",
     },

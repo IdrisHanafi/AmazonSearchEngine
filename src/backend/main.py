@@ -108,7 +108,14 @@ async def get_products(
             "error": found_error
         }
 
-FILTER_OPTIONS_V2 = ["top_quality","top_value","top_sellers","top_ratings","top_reviews"]
+FILTER_OPTIONS_V2 = [
+    "top_matches",
+    "top_quality",
+    "top_value",
+    "top_sellers",
+    "top_ratings",
+    "top_reviews"
+]
 
 @api.get("/get_products/v2/")
 async def get_products_v2(

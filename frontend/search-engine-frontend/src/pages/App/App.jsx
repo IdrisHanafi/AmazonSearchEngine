@@ -9,6 +9,7 @@ import getSubcategory from "../../services/getSubcategory";
 import getProducts from "../../services/getProducts";
 
 // import components
+import Loading from "../../components/atoms/Loading/Loading";
 import SearchAndButton from "../../components/molecules/SearchAndButton/SearchAndButton";
 import Filters from "../../components/molecules/Filters/Filters";
 import CheckBox from "../../components/atoms/CheckBox/CheckBox";
@@ -27,8 +28,11 @@ function App() {
   // Selections
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [availableCategories, setAvailableCategories] = useState(null);
+  // const [availableCategoriesLoading, setAvailableCategoriesLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [foundProducts, setFoundProducts] = useState(null);
+  // const [foundProductsLoading, setFoundProductsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function resetCurrSelections() {
     setSelectedCategory(null);
@@ -80,6 +84,8 @@ function App() {
   }, [currText, selectedCategory, availableCategories, selectedFilter])
 
   function getSubcategoryCall(queryString) {
+    setIsLoading(true);
+
     getSubcategory({ selectedSubcategoryModel, queryString }).then((res) => {
       console.log("Successfully got response");
       console.log(res);
@@ -88,10 +94,14 @@ function App() {
     }).catch((error) => {
       console.log("error");
       console.log(error)
+    }).finally(() => {
+      setIsLoading(false);
     });
   }
 
   function getProductsCall(queryString, categoryId, filterType) {
+    setIsLoading(true);
+
     console.log("GETTING PRODUCT API")
     getProducts({ selectedRankingAlgorithm, queryString, categoryId, filterType }).then((res) => {
       console.log("Successfully got response");
@@ -101,6 +111,8 @@ function App() {
     }).catch((error) => {
       console.log("error");
       console.log(error)
+    }).finally(() => {
+      setIsLoading(false);
     });
   }
 
@@ -183,6 +195,8 @@ function App() {
         )}
 
         <ProductInfoList products={foundProducts} />
+        <Loading isLoading={isLoading} />
+
       </div>
 
     </div>
