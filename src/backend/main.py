@@ -1,6 +1,9 @@
 import time
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from src.m1_query import (
+    M1Lsi
+)
 from src.m2_query import (
     tfidf
 )
@@ -14,6 +17,7 @@ from src.r2_query import (
     R2Smart
 )
 
+m1_obj = M1Lsi()
 tfidf_object = tfidf()
 tfidf_threshold_object = TfIdfThreshold()
 r1_obj = R1Baseline(extra_feature=True) 
@@ -38,6 +42,25 @@ api.add_middleware(
 @api.get("/")
 async def root():
     return {"message": "Hello World"}
+
+@api.get("/get_subcategory/m1/{user_query}")
+async def m1_query(user_query: str):
+    try:
+        start_time = time.time()
+        result_obj = m1_obj.query_category(user_query)
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        return {
+            "message": f"Found {len(result_obj)} result(s) for {user_query}",
+            "user_query": user_query,
+            "subcategory_found": result_obj,
+            "time_elapsed": elapsed_time,
+        }
+    except Exception as found_error:
+        return {
+            "message": "No result found",
+            "error": found_error
+        }
 
 @api.get("/get_subcategory/{user_query}")
 async def query(user_query: str):
