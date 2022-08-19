@@ -1,6 +1,6 @@
 export const modelOptions = {
   "subcategory": [
-    { value: "M1", label: "M1 - LSI", isDisabled: true },
+    { value: "M1", label: "M1 - LSI" },
     { value: "M2", label: "M2 - TF-IDF" },
     { value: "M2+", label: "M2+ - TF-IDF ASIN" },
   ],

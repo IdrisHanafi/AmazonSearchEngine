@@ -4,7 +4,7 @@ import config from "../config.json";
 const modelEndpoints = {
   "M2": "get_subcategory/",
   "M2+": "get_subcategory/v2/",
-  // "M1": "get_products/v3/",
+  "M1": "get_products/m1/",
 }
 
 function getSubcategory({ selectedSubcategoryModel, queryString }) {
