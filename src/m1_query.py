@@ -28,7 +28,7 @@ class M1Lsi:
         with open(f"{dir_path}/../index/M2_index_category.pickle", "rb") as filehandle:
             self.index_category = pickle.load(filehandle)
 
-    def query_category(self, test_query, threshold=0.86, group_count=3):
+    def query_category(self, test_query, threshold=0.75, group_count=3):
         Xquery = self.vectorizer.transform([test_query])
         q_topic_lsi = self.model.transform(Xquery)
         lsi_simularity = cosine_similarity(q_topic_lsi, self.lsi_text_transformed)
@@ -54,5 +54,5 @@ class M1Lsi:
 if __name__=="__main__":
     m1_obj = M1Lsi()
 
-    res = m1_obj.query_category("ps4", threshold=0.86)
+    res = m1_obj.query_category("ps4", threshold=0.75)
     print(res)
