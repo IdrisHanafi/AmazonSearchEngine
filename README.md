@@ -4,7 +4,9 @@ Built by: James Rosenkoetter, Frederic Gigou, Curtis Guo, Idris Hanafi
 
 ## Overview
 
-This is the repository that includes the code, data, and model components for the engine.
+![Product Demo](https://697-public-datasets.s3.us-east-2.amazonaws.com/SearchEngine.gif)
+
+An extremely light weight end-to-end search engine using simple NLP algorithms.
 
 ## Prerequisites
 
@@ -50,7 +52,7 @@ Pull all of the data and models to our current directory:
 (697_venv) $ source ./get_data_and_model.sh
 ```
 
-### 3. Database Setup
+### 3. Database and Data Setup
 
 The database is a Postgres DB. Confirm that you have postgres installed on your
 environment. To do so, create a `.env` file for Prisma to connect to your DB.
@@ -63,6 +65,11 @@ DATABASE_URL="postgresql://<USERNAME>:<PASSWORD>@localhost:5432/amzn_product_db"
 Afterwards, migrate the schemas into the DB:
 ```
 (697_venv) $ prisma db push
+```
+
+Lastly, migrate all of the product metadata into the DB:
+```
+(697_venv) $ python db/main.py
 ```
 
 ### 4. Run the backend
