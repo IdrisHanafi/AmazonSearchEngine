@@ -1,11 +1,10 @@
 stages:
   clean_metadata:
     cmd: python3 src/clean_metadata.py
-        --input_bucket 697-datasets
-        --input_file meta_Electronics-0.1-percent.csv
-        --output_file data/cleaned_output.csv
+        --input_file datasets/meta_Electronics.json
+        --output_file datasets/cleaned_data.json
     outs:
-    - data/cleaned_output.csv
+    - datasets/cleaned_data.json
   train_lda:
     cmd: python3 src/train_lda.py
         --input_file data/cleaned_output.csv
