@@ -4,9 +4,9 @@ Built by: James Rosenkoetter, Frederic Gigou, Curtis Guo, Idris Hanafi
 
 ## Overview
 
-![Product Demo](https://697-public-datasets.s3.us-east-2.amazonaws.com/SearchEngine.gif)
+![Product Demo](https://697-public-datasets.s3.us-east-2.amazonaws.com/SearchEngineDemo.gif)
 
-An extremely light weight end-to-end search engine using simple NLP algorithms.
+An extremely light weight end-to-end search engine using NLP algorithms.
 
 ## Prerequisites
 
