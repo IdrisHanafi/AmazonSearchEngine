@@ -5,7 +5,15 @@ stages:
         --output_file datasets/cleaned_data.json
     outs:
     - datasets/cleaned_data.json
-  train_lda:
-    cmd: python3 src/train_lda.py
-        --input_file data/cleaned_output.csv
-        --output_model models/lda_model.joblib
+  m2_preparation:
+    cmd: python3 src/m2_preparation.py
+        --input_file datasets/cleaned_data.json
+        --output_dataset_dir datasets/m2_data/
+        --output_index_dir index/
+        --output_model_dir models/
+    deps:
+    - datasets/cleaned_data.json
+    outs:
+    - datasets/m2_data/
+    - index/
+    - models/

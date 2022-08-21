@@ -1,5 +1,4 @@
 import os
-import boto3
 import pandas as pd
 import re
 from bs4 import BeautifulSoup as BSHTML
@@ -193,12 +192,12 @@ def parse_args() -> Namespace:
     parser = ArgumentParser()
     parser.add_argument(
         "--input_file",
-        help="The Input S3 File Directory that contains csv files to read from",
+        help="The Input Raw input File that contains the product metadata",
         type=str
     )
     parser.add_argument(
         "--output_file",
-        help="The output file",
+        help="The cleaned output file",
         type=str
     )
     
