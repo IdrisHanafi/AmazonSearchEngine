@@ -4,6 +4,8 @@ Built by: James Rosenkoetter, Frederic Gigou, Curtis Guo, Idris Hanafi
 
 ## Overview
 
+Playground deployed on EC2: http://ec2-18-220-136-214.us-east-2.compute.amazonaws.com/
+
 ![Product Demo](https://697-public-datasets.s3.us-east-2.amazonaws.com/SearchEngineDemo.gif)
 
 An extremely light weight end-to-end search engine using NLP algorithms.
