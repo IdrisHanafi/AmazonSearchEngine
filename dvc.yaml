@@ -5,7 +5,7 @@ stages:
         --output_file datasets/cleaned_data.json
     outs:
     - datasets/cleaned_data.json
-  clean_metadata:
+  generate_review_features:
     cmd: python3 src/generate_review_features.py
         --input_file datasets/Electronics_5.json
         --output_dataset_dir datasets/
@@ -29,7 +29,7 @@ stages:
     cmd: python3 src/r1_preparation.py
         --input_file datasets/cleaned_data.json
         --input_ratings datasets/ratings.csv
-        --output_index_dir index/
+        --output_dataset_dir datasets/r1_data/
         --output_model_dir models/
     deps:
     - datasets/cleaned_data.json
@@ -38,3 +38,14 @@ stages:
     - datasets/r1_data/
     - index/
     - models/
+  r2_preparation:
+    cmd: python3 src/r2_preparation.py
+        --input_r1_dataset_dir datasets/r1_data/
+        --input_r1_index index/R1_index_asin.pickle
+        --input_review_sentiment_dir datasets/
+        --output_r2_dir datasets/r2_data/
+    deps:
+    - datasets/
+    - index/R1_index_asin.pickle
+    outs:
+    - datasets/r2_data/R2_Rank_mtx.npz
