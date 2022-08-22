@@ -9,11 +9,26 @@ stages:
     cmd: python3 src/m2_preparation.py
         --input_file datasets/cleaned_data.json
         --output_dataset_dir datasets/m2_data/
+        --output_ranking_dataset_dir datasets/r1_data/
         --output_index_dir index/
         --output_model_dir models/
     deps:
     - datasets/cleaned_data.json
     outs:
     - datasets/m2_data/
+    - datasets/r1_data/
+    - index/
+    - models/
+  r1_preparation:
+    cmd: python3 src/r1_preparation.py
+        --input_file datasets/cleaned_data.json
+        --input_ratings datasets/ratings.csv
+        --output_index_dir index/
+        --output_model_dir models/
+    deps:
+    - datasets/cleaned_data.json
+    - datasets/ratings.csv
+    outs:
+    - datasets/r1_data/
     - index/
     - models/

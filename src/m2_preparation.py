@@ -1,5 +1,7 @@
 """
-This module creates the M2 Model:
+This module creates the M2 Model and the dependencies
+required by the ranking algorithms.
+
 Input_file:
 - "datasets/cleaned_data.json"              # from clean_metadata
     
@@ -162,6 +164,7 @@ def tf_idf(sub_df):
 def main_process(
     data,
     output_dataset_dir,
+    output_ranking_dataset_dir,
     output_index_dir,
     output_model_dir,
 ):
@@ -185,7 +188,7 @@ def main_process(
     
     # 4- indexation
     full_indexed_df, gb_indexed_df, gb2 = indexation(data_short, output_index_dir)
-    write_to_file(full_indexed_df, f"{output_dataset_dir}/R1_data_indexed.json")
+    write_to_file(full_indexed_df, f"{output_ranking_dataset_dir}/R1_data_indexed.json")
     write_to_file(gb_indexed_df, f"{output_dataset_dir}/M2_categories.json")
     
     # 5- creating and saving model and matrix
@@ -254,14 +257,16 @@ if __name__ == "__main__":
 
     input_file = parsed_args.input_file
     output_dataset_dir = parsed_args.output_dataset_dir
+    output_ranking_dataset_dir = parsed_args.output_ranking_dataset_dir
     output_index_dir = parsed_args.output_index_dir
     output_model_dir = parsed_args.output_model_dir
     
     # 1- step one, retrive the data
     df = load_data(input_file)
     full_indexed_df, gb_indexed_df, gb2, df_mtx = main_process(
-        data,
+        df,
         output_dataset_dir,
+        output_ranking_dataset_dir,
         output_index_dir,
         output_model_dir,
     )
