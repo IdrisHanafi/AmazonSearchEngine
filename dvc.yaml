@@ -5,6 +5,12 @@ stages:
         --output_file datasets/cleaned_data.json
     outs:
     - datasets/cleaned_data.json
+  clean_metadata:
+    cmd: python3 src/generate_review_features.py
+        --input_file datasets/Electronics_5.json
+        --output_dataset_dir datasets/
+    outs:
+    - datasets/
   m2_preparation:
     cmd: python3 src/m2_preparation.py
         --input_file datasets/cleaned_data.json
