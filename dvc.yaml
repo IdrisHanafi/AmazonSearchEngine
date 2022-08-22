@@ -11,6 +11,19 @@ stages:
         --output_dataset_dir datasets/
     outs:
     - datasets/
+  m1_preparation:
+    cmd: python3 src/m1_preparation.py
+        --input_file datasets/cleaned_data.json
+        --input_file_category_string_index datasets/m1_data/category_string_index.pickle
+        --output_dataset_dir datasets/m1_data/
+        --output_index_dir index/
+        --output_model_dir models/
+    deps:
+    - datasets/cleaned_data.json
+    outs:
+    - datasets/m1_data/
+    - index/
+    - models/
   m2_preparation:
     cmd: python3 src/m2_preparation.py
         --input_file datasets/cleaned_data.json
