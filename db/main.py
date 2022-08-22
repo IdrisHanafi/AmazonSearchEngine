@@ -32,7 +32,7 @@ async def insert_r1_indexed() -> None:
 
     chunksize = 1000
     chunks = pd.read_json(
-        "datasets/r1_data/R1_data_indexed_lines.json",
+        "datasets/r1_data/R1_data_indexed.json",
         lines=True,
         chunksize=chunksize
     )
@@ -49,5 +49,5 @@ async def insert_r1_indexed() -> None:
     await db.disconnect()
 
 if __name__ == '__main__':
-    # asyncio.run(insert_main_product_info())
+    asyncio.run(insert_main_product_info())
     asyncio.run(insert_r1_indexed())
